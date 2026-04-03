@@ -1,16 +1,730 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Git & GitHub Sessions</title>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,700;0,9..144,900;1,9..144,300&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --cream: #f5f0e8;
+      --warm-white: #faf8f4;
+      --ink: #1a1612;
+      --ink-soft: #3d3730;
+      --muted: #8c7f72;
+      --accent: #c9410f;
+      --accent-light: #f0e4dc;
+      --border: #e0d8ce;
+      --gold: #b8860b;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--warm-white);
+      color: var(--ink);
+      font-family: 'DM Sans', sans-serif;
+      font-weight: 300;
+      overflow-x: hidden;
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 20px 48px;
+      background: rgba(250, 248, 244, 0.85);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .nav-logo {
+      font-family: 'Fraunces', serif;
+      font-weight: 700;
+      font-size: 18px;
+      color: var(--ink);
+      letter-spacing: -0.02em;
+    }
+
+    .nav-logo span { color: var(--accent); }
+
+    .nav-links {
+      display: flex;
+      gap: 36px;
+      list-style: none;
+    }
+
+    .nav-links a {
+      text-decoration: none;
+      color: var(--muted);
+      font-size: 13px;
+      font-weight: 400;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      transition: color 0.2s;
+    }
+
+    .nav-links a:hover { color: var(--ink); }
+
+    .nav-cta {
+      background: var(--ink);
+      color: var(--cream) !important;
+      padding: 9px 22px;
+      border-radius: 100px;
+      transition: background 0.2s !important;
+    }
+
+    .nav-cta:hover { background: var(--accent) !important; color: #fff !important; }
+
+    /* ── HERO ── */
+    .hero {
+      min-height: 100vh;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      align-items: center;
+      padding: 120px 48px 80px;
+      gap: 64px;
+      max-width: 1280px;
+      margin: 0 auto;
+    }
+
+    .hero-left { display: flex; flex-direction: column; gap: 28px; }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--accent);
+      animation: fadeUp 0.6s ease both;
+    }
+
+    .eyebrow::before {
+      content: '';
+      display: block;
+      width: 28px;
+      height: 1px;
+      background: var(--accent);
+    }
+
+    h1 {
+      font-family: 'Fraunces', serif;
+      font-weight: 900;
+      font-size: clamp(42px, 5.5vw, 76px);
+      line-height: 1.0;
+      letter-spacing: -0.03em;
+      color: var(--ink);
+      animation: fadeUp 0.6s 0.1s ease both;
+    }
+
+    h1 em {
+      font-style: italic;
+      color: var(--accent);
+    }
+
+    .hero-desc {
+      font-size: 17px;
+      line-height: 1.75;
+      color: var(--ink-soft);
+      max-width: 480px;
+      animation: fadeUp 0.6s 0.2s ease both;
+    }
+
+    .hero-actions {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      flex-wrap: wrap;
+      animation: fadeUp 0.6s 0.3s ease both;
+    }
+
+    .btn-primary {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      background: var(--accent);
+      color: #fff;
+      text-decoration: none;
+      font-size: 14px;
+      font-weight: 500;
+      padding: 14px 32px;
+      border-radius: 100px;
+      transition: all 0.25s;
+      letter-spacing: 0.01em;
+    }
+
+    .btn-primary:hover {
+      background: var(--ink);
+      transform: translateY(-2px);
+      box-shadow: 0 12px 32px rgba(26,22,18,0.2);
+    }
+
+    .btn-primary svg { width: 16px; height: 16px; transition: transform 0.2s; }
+    .btn-primary:hover svg { transform: translateX(3px); }
+
+    .btn-ghost {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      color: var(--muted);
+      text-decoration: none;
+      font-size: 14px;
+      font-weight: 400;
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 2px;
+      transition: color 0.2s, border-color 0.2s;
+    }
+
+    .btn-ghost:hover { color: var(--ink); border-color: var(--ink); }
+
+    .hero-stats {
+      display: flex;
+      gap: 32px;
+      padding-top: 16px;
+      border-top: 1px solid var(--border);
+      animation: fadeUp 0.6s 0.4s ease both;
+    }
+
+    .stat { display: flex; flex-direction: column; gap: 2px; }
+
+    .stat-num {
+      font-family: 'Fraunces', serif;
+      font-weight: 700;
+      font-size: 28px;
+      color: var(--ink);
+      letter-spacing: -0.03em;
+    }
+
+    .stat-label { font-size: 12px; color: var(--muted); letter-spacing: 0.04em; text-transform: uppercase; }
+
+    /* Hero image panel */
+    .hero-right {
+      position: relative;
+      animation: fadeIn 0.8s 0.3s ease both;
+    }
+
+    .img-frame {
+      position: relative;
+      border-radius: 24px;
+      overflow: hidden;
+      box-shadow: 0 40px 80px rgba(26,22,18,0.15);
+    }
+
+    .img-frame img {
+      width: 100%;
+      height: auto;
+      display: block;
+      border-radius: 24px;
+    }
+
+    .img-badge {
+      position: absolute;
+      bottom: 24px;
+      left: 24px;
+      background: rgba(250,248,244,0.92);
+      backdrop-filter: blur(8px);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 14px 18px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .badge-dot {
+      width: 10px; height: 10px;
+      background: #22c55e;
+      border-radius: 50%;
+      box-shadow: 0 0 0 3px rgba(34,197,94,0.2);
+      animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.5} }
+
+    .badge-text { font-size: 13px; color: var(--ink-soft); font-weight: 400; }
+    .badge-text strong { font-weight: 500; color: var(--ink); display: block; }
+
+    .deco-ring {
+      position: absolute;
+      top: -24px;
+      right: -24px;
+      width: 100px;
+      height: 100px;
+      border: 2px dashed var(--border);
+      border-radius: 50%;
+      animation: spin 20s linear infinite;
+    }
+
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* ── FEATURES STRIP ── */
+    .features-strip {
+      background: var(--cream);
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      padding: 64px 48px;
+    }
+
+    .features-inner {
+      max-width: 1280px;
+      margin: 0 auto;
+    }
+
+    .section-header {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 48px;
+      align-items: end;
+      margin-bottom: 56px;
+    }
+
+    .section-tag {
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 12px;
+    }
+
+    h2 {
+      font-family: 'Fraunces', serif;
+      font-weight: 700;
+      font-size: clamp(28px, 3.5vw, 46px);
+      line-height: 1.1;
+      letter-spacing: -0.02em;
+      color: var(--ink);
+    }
+
+    .section-body {
+      font-size: 15px;
+      line-height: 1.8;
+      color: var(--muted);
+      max-width: 440px;
+    }
+
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 2px;
+      background: var(--border);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      overflow: hidden;
+    }
+
+    .feature-card {
+      background: var(--warm-white);
+      padding: 36px 32px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      transition: background 0.2s;
+    }
+
+    .feature-card:hover { background: var(--accent-light); }
+
+    .feature-icon {
+      width: 44px; height: 44px;
+      background: var(--accent-light);
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+    }
+
+    .feature-title {
+      font-family: 'Fraunces', serif;
+      font-weight: 700;
+      font-size: 18px;
+      color: var(--ink);
+      letter-spacing: -0.01em;
+    }
+
+    .feature-desc {
+      font-size: 14px;
+      line-height: 1.7;
+      color: var(--muted);
+    }
+
+    /* ── TOPICS SECTION ── */
+    .topics {
+      padding: 80px 48px;
+      max-width: 1280px;
+      margin: 0 auto;
+    }
+
+    .topics-header { margin-bottom: 48px; }
+
+    .topics-list { display: flex; flex-direction: column; gap: 0; }
+
+    .topic-row {
+      display: grid;
+      grid-template-columns: 60px 1fr auto;
+      align-items: center;
+      gap: 24px;
+      padding: 28px 0;
+      border-bottom: 1px solid var(--border);
+      text-decoration: none;
+      color: inherit;
+      transition: all 0.2s;
+      cursor: pointer;
+    }
+
+    .topic-row:first-child { border-top: 1px solid var(--border); }
+
+    .topic-row:hover { padding-left: 12px; }
+    .topic-row:hover .topic-num { color: var(--accent); }
+    .topic-row:hover .topic-arrow { transform: translateX(6px); color: var(--accent); }
+
+    .topic-num {
+      font-family: 'Fraunces', serif;
+      font-size: 13px;
+      font-weight: 300;
+      color: var(--muted);
+      font-style: italic;
+      transition: color 0.2s;
+    }
+
+    .topic-content { display: flex; flex-direction: column; gap: 4px; }
+
+    .topic-title {
+      font-family: 'Fraunces', serif;
+      font-weight: 700;
+      font-size: 20px;
+      color: var(--ink);
+      letter-spacing: -0.01em;
+    }
+
+    .topic-sub {
+      font-size: 13px;
+      color: var(--muted);
+    }
+
+    .topic-tag {
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      background: var(--accent-light);
+      color: var(--accent);
+      padding: 5px 12px;
+      border-radius: 100px;
+    }
+
+    .topic-arrow {
+      color: var(--muted);
+      font-size: 20px;
+      transition: transform 0.2s, color 0.2s;
+    }
+
+    /* ── QUOTE / CTA BANNER ── */
+    .banner {
+      background: var(--ink);
+      color: var(--cream);
+      padding: 80px 48px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .banner::before {
+      content: '"';
+      position: absolute;
+      top: -20px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-family: 'Fraunces', serif;
+      font-size: 300px;
+      color: rgba(255,255,255,0.03);
+      line-height: 1;
+      pointer-events: none;
+    }
+
+    .banner-inner { max-width: 720px; margin: 0 auto; position: relative; z-index: 1; }
+
+    .banner-quote {
+      font-family: 'Fraunces', serif;
+      font-style: italic;
+      font-weight: 300;
+      font-size: clamp(22px, 3vw, 36px);
+      line-height: 1.4;
+      color: var(--cream);
+      margin-bottom: 32px;
+    }
+
+    .banner-author {
+      font-size: 13px;
+      color: rgba(245, 240, 232, 0.45);
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      margin-bottom: 48px;
+    }
+
+    .btn-light {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      background: var(--cream);
+      color: var(--ink);
+      text-decoration: none;
+      font-size: 14px;
+      font-weight: 500;
+      padding: 14px 32px;
+      border-radius: 100px;
+      transition: all 0.25s;
+    }
+
+    .btn-light:hover {
+      background: var(--accent);
+      color: #fff;
+      transform: translateY(-2px);
+    }
+
+    /* ── FOOTER ── */
+    footer {
+      background: var(--cream);
+      border-top: 1px solid var(--border);
+      padding: 40px 48px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+
+    .footer-logo {
+      font-family: 'Fraunces', serif;
+      font-weight: 700;
+      font-size: 16px;
+      color: var(--ink);
+    }
+
+    .footer-logo span { color: var(--accent); }
+
+    .footer-links {
+      display: flex;
+      gap: 28px;
+      list-style: none;
+    }
+
+    .footer-links a {
+      font-size: 13px;
+      color: var(--muted);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+
+    .footer-links a:hover { color: var(--ink); }
+
+    .footer-copy { font-size: 12px; color: var(--muted); }
+
+    /* ── ANIMATIONS ── */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to   { opacity: 1; }
+    }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 900px) {
+      nav { padding: 16px 24px; }
+      .nav-links { display: none; }
+      .hero { grid-template-columns: 1fr; padding: 100px 24px 60px; gap: 40px; }
+      .hero-right { order: -1; }
+      .section-header { grid-template-columns: 1fr; }
+      .features-grid { grid-template-columns: 1fr; }
+      .features-strip, .topics, .banner, footer { padding-left: 24px; padding-right: 24px; }
+    }
+  </style>
 </head>
-<div style="width: 450px; margin: auto; text-align: center;">
-    <img src="git.png" width="450px" alt="" >
-    <h1>Welcome to the Git and GitHub Sessions</h1>
-    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Inventore nisi, modi voluptate incidunt mollitia nam voluptatum!</p>
-    <a href="VersionControl.html">View Version Control Commands</a>
-</div> 
 <body>
+
+  <!-- NAV -->
+  <nav>
+    <div class="nav-logo">git<span>&</span>hub</div>
+    <ul class="nav-links">
+      <li><a href="#">Overview</a></li>
+      <li><a href="#">Sessions</a></li>
+      <li><a href="#">Resources</a></li>
+      <li><a href="VersionControl.html" class="nav-cta">Commands →</a></li>
+    </ul>
+  </nav>
+
+  <!-- HERO -->
+  <section>
+    <div class="hero">
+      <div class="hero-left">
+        <span class="eyebrow">Developer Essentials</span>
+        <h1>Master<br><em>Git</em> &<br>GitHub</h1>
+        <p class="hero-desc">
+          Learn the world's most widely used version control system from first principles. Track changes, collaborate seamlessly, and ship with confidence — commit by commit.
+        </p>
+        <div class="hero-actions">
+          <a href="VersionControl.html" class="btn-primary">
+            View All Commands
+            <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 8h10M9 4l4 4-4 4"/></svg>
+          </a>
+          <a href="#topics" class="btn-ghost">Explore topics ↓</a>
+        </div>
+        <div class="hero-stats">
+          <div class="stat">
+            <span class="stat-num">24+</span>
+            <span class="stat-label">Commands</span>
+          </div>
+          <div class="stat">
+            <span class="stat-num">5</span>
+            <span class="stat-label">Categories</span>
+          </div>
+          <div class="stat">
+            <span class="stat-num">∞</span>
+            <span class="stat-label">Projects</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="hero-right">
+        <div class="deco-ring"></div>
+        <div class="img-frame">
+          <img src="git.png" alt="Git & GitHub illustration">
+          <div class="img-badge">
+            <div class="badge-dot"></div>
+            <div class="badge-text">
+              <strong>Session Active</strong>
+              Version Control · Module 1
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FEATURES -->
+  <section class="features-strip">
+    <div class="features-inner">
+      <div class="section-header">
+        <div>
+          <div class="section-tag">Why Learn Git</div>
+          <h2>The backbone of modern development</h2>
+        </div>
+        <p class="section-body">
+          Git is not just a tool — it's the language developers use to collaborate. Every professional project, open-source library, and production codebase relies on it. Understanding Git deeply separates juniors from seniors.
+        </p>
+      </div>
+
+      <div class="features-grid">
+        <div class="feature-card">
+          <div class="feature-icon">🔀</div>
+          <div class="feature-title">Branching & Merging</div>
+          <p class="feature-desc">Work on features in isolation without breaking the main codebase. Merge changes cleanly when you're ready to ship.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">🕰️</div>
+          <div class="feature-title">Full History</div>
+          <p class="feature-desc">Every commit is a snapshot in time. Travel back to any version of your project with a single command — no more "undo" anxiety.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">🤝</div>
+          <div class="feature-title">Team Collaboration</div>
+          <p class="feature-desc">Multiple developers can work simultaneously on the same project. Pull Requests, code reviews, and conflict resolution become second nature.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- TOPICS -->
+  <section class="topics" id="topics">
+    <div class="topics-header">
+      <div class="section-tag">Session Curriculum</div>
+      <h2>What you'll learn</h2>
+    </div>
+
+    <div class="topics-list">
+      <a href="VersionControl.html" class="topic-row">
+        <span class="topic-num">01</span>
+        <div class="topic-content">
+          <span class="topic-title">Version Control Fundamentals</span>
+          <span class="topic-sub">git init, git add, git commit, git status — building your first repository</span>
+        </div>
+        <span class="topic-tag">Beginner</span>
+        <span class="topic-arrow">→</span>
+      </a>
+      <a href="VersionControl.html" class="topic-row">
+        <span class="topic-num">02</span>
+        <div class="topic-content">
+          <span class="topic-title">Working with Remote Repositories</span>
+          <span class="topic-sub">Connecting to GitHub, pushing & pulling, managing origins</span>
+        </div>
+        <span class="topic-tag">Beginner</span>
+        <span class="topic-arrow">→</span>
+      </a>
+      <a href="VersionControl.html" class="topic-row">
+        <span class="topic-num">03</span>
+        <div class="topic-content">
+          <span class="topic-title">Branching Strategies</span>
+          <span class="topic-sub">Feature branches, Git Flow, merging, and resolving conflicts like a pro</span>
+        </div>
+        <span class="topic-tag">Intermediate</span>
+        <span class="topic-arrow">→</span>
+      </a>
+      <a href="VersionControl.html" class="topic-row">
+        <span class="topic-num">04</span>
+        <div class="topic-content">
+          <span class="topic-title">Undoing & Reverting Changes</span>
+          <span class="topic-sub">git reset, git stash, git revert — safely rolling back without losing work</span>
+        </div>
+        <span class="topic-tag">Intermediate</span>
+        <span class="topic-arrow">→</span>
+      </a>
+      <a href="VersionControl.html" class="topic-row">
+        <span class="topic-num">05</span>
+        <div class="topic-content">
+          <span class="topic-title">GitHub for Teams</span>
+          <span class="topic-sub">Pull Requests, Issues, Actions, and collaborative workflows used in industry</span>
+        </div>
+        <span class="topic-tag">Advanced</span>
+        <span class="topic-arrow">→</span>
+      </a>
+    </div>
+  </section>
+
+  <!-- QUOTE BANNER -->
+  <section class="banner">
+    <div class="banner-inner">
+      <p class="banner-quote">
+        "Every expert was once a beginner who committed to learning — one commit at a time."
+      </p>
+      <p class="banner-author">— Git &amp; GitHub Sessions</p>
+      <a href="VersionControl.html" class="btn-light">
+        Start with the Commands →
+      </a>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-logo">git<span>&</span>hub sessions</div>
+    <ul class="footer-links">
+      <li><a href="#">Home< /a></li>
+      <li><a href="VersionControl.html">Commands</a></li>
+      <li><a href="#">Resources</a></li>
+    </ul>
+    <span class="footer-copy">Built for developers, by developers.</span>
+  </footer>
+
 </body>
 </html>
